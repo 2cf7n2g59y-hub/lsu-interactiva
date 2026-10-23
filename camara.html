@@ -1,0 +1,1534 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Practicá con la cámara | Aprendé LSU</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Shrikhand&display=swap"
+    rel="stylesheet"
+  >
+
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
+
+
+  <style>
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+
+    body {
+      font-family: "DM Sans", sans-serif;
+
+      color: #294C45;
+
+      background-color: #E4EBC8;
+
+      min-height: 100vh;
+    }
+
+    header {
+      background-color: #285F55;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      padding: 18px 8%;
+    }
+
+    .logo {
+      color: #FFF8E7;
+
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .logo::after {
+      content: " ✦";
+
+      color: #B84A3A;
+    }
+
+    nav {
+      display: flex;
+
+      gap: 15px;
+    }
+
+    nav a {
+      background-color: #9AABD0;
+
+      color: white;
+
+      text-decoration: none;
+
+      padding: 10px 18px;
+
+      border: 2px solid #FFF8E7;
+      border-radius: 25px;
+
+      font-size: 13px;
+
+      transition: 0.2s;
+    }
+
+    nav a:hover {
+      background-color: #B84A3A;
+    }
+
+    .pagina-camara {
+      min-height: calc(100vh - 70px);
+
+      padding: 25px 20px 40px;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      text-align: center;
+
+      background-color: #E4EBC8;
+
+      background-image: repeating-linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.25) 0px,
+        rgba(255, 255, 255, 0.25) 45px,
+        transparent 45px,
+        transparent 90px
+      );
+    }
+
+    .mini-titulo {
+      color: #B84A3A;
+
+      font-size: 13px;
+      font-weight: 700;
+
+      letter-spacing: 2px;
+
+      margin-bottom: 7px;
+    }
+
+    .titulo-camara {
+      font-family: "Shrikhand", cursive;
+
+      color: #294C45;
+
+      font-size: 45px;
+      font-weight: normal;
+
+      margin-bottom: 8px;
+    }
+
+    .instruccion {
+      max-width: 580px;
+
+      font-size: 16px;
+      line-height: 1.6;
+
+      margin-bottom: 20px;
+    }
+
+
+    .senas-disponibles {
+      width: min(760px, 92vw);
+
+      margin: 0 auto 35px;
+    }
+
+
+    .boton-senas {
+      width: 100%;
+
+      background-color: #FFF8E7;
+      color: #285F55;
+
+      border: 2px solid #285F55;
+      border-radius: 20px;
+
+      box-shadow: 5px 5px 0px #9AABD0;
+
+      padding: 14px 20px;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      gap: 15px;
+
+      font-family: "DM Sans", sans-serif;
+
+      cursor: pointer;
+
+      transition: 0.2s;
+    }
+
+
+    .boton-senas:hover {
+      transform: translateY(-2px);
+    }
+
+
+    .boton-senas span {
+      font-size: 14px;
+    }
+
+
+    .boton-senas strong {
+      color: #B84A3A;
+
+      font-size: 13px;
+
+      letter-spacing: 0.5px;
+    }
+
+
+    .boton-senas.abierto {
+      justify-content: center;
+    }
+
+
+    .panel-senas {
+      display: none;
+
+      margin-top: 18px;
+    }
+
+
+    .panel-senas.abierto {
+      display: block;
+    }
+
+    .grid-senas {
+      background-color: #FFF8E7;
+
+      border: 2px solid #285F55;
+      border-radius: 24px;
+
+      box-shadow: 6px 6px 0px #285F55;
+
+      padding: 20px;
+
+      display: grid;
+
+      grid-template-columns: repeat(6, 95px);
+
+      justify-content: center;
+
+      gap: 14px;
+    }
+
+
+    .sena {
+  width: 95px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sena img {
+  width: 95px;
+  height: 115px;
+
+  object-fit: contain;
+
+  display: block;
+}
+
+
+    .zona-practica {
+      position: relative;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      gap: 55px;
+
+      width: fit-content;
+      max-width: 100%;
+
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .marco-camara {
+      width: min(600px, 92vw);
+
+      background-color: #9AABD0;
+
+      padding: 14px;
+
+      border-radius:
+        35px 55px 38px 60px /
+        50px 35px 55px 40px;
+
+      box-shadow: 9px 9px 0px #285F55;
+
+      flex-shrink: 0;
+    }
+
+    .interior-camara {
+      overflow: hidden;
+
+      background-color: #222;
+
+      border-radius:
+        27px 47px 30px 52px /
+        42px 27px 47px 32px;
+    }
+    #outputCanvas {
+      display: block;
+
+      width: 100%;
+      height: auto;
+    }
+
+    #inputVideo {
+      display: none;
+    }
+
+    .resultado {
+      position: relative;
+
+      width: 270px;
+      min-height: 155px;
+
+      background-color: #FFF8E7;
+
+      border: 2px solid #285F55;
+
+      border-radius:
+        28px 38px 30px 42px /
+        35px 28px 40px 30px;
+
+      box-shadow: 6px 6px 0px #B84A3A;
+
+      padding: 18px;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      flex-shrink: 0;
+    }
+
+    .resultado::before {
+      content: "✦";
+
+      position: absolute;
+
+      top: -18px;
+      right: -12px;
+
+      color: #9AABD0;
+
+      font-size: 34px;
+    }
+
+    .texto-resultado {
+      color: #285F55;
+
+      font-size: 12px;
+      font-weight: 700;
+
+      letter-spacing: 2px;
+
+      margin-bottom: 4px;
+    }
+
+
+    #letra {
+      font-family: "Shrikhand", cursive;
+
+      color: #B84A3A;
+
+      font-size: 65px;
+      font-weight: normal;
+
+      line-height: 1.1;
+    }
+
+
+    #letra.texto-largo {
+      font-family: "DM Sans", sans-serif;
+
+      font-size: 20px;
+      font-weight: 700;
+
+      letter-spacing: 1px;
+    }
+
+    .estrella-deco {
+      position: absolute;
+
+      z-index: 2;
+
+      pointer-events: none;
+    }
+
+
+    .estrella-1 {
+      color: #B84A3A;
+
+      font-size: 30px;
+
+      top: -18px;
+      left: -35px;
+
+      transform: rotate(-15deg);
+    }
+
+
+    .estrella-2 {
+      color: #9AABD0;
+
+      font-size: 22px;
+
+      top: 25px;
+      right: -35px;
+
+      transform: rotate(15deg);
+    }
+
+
+    .estrella-3 {
+      color: #285F55;
+
+      font-size: 18px;
+
+      bottom: 15px;
+      right: 285px;
+
+      transform: rotate(25deg);
+    }
+
+    @media (max-width: 1000px) {
+
+      .zona-practica {
+        flex-direction: column;
+
+        gap: 30px;
+
+        width: 100%;
+      }
+
+
+      .estrella-1 {
+        left: 3%;
+      }
+
+
+      .estrella-2 {
+        right: 5%;
+      }
+
+
+      .estrella-3 {
+        right: 15%;
+
+        bottom: 120px;
+      }
+
+    }
+
+    @media (max-width: 760px) {
+
+      header {
+        flex-direction: column;
+
+        gap: 15px;
+
+        padding: 18px;
+      }
+
+
+      nav {
+        flex-wrap: wrap;
+
+        justify-content: center;
+
+        gap: 8px;
+      }
+
+
+      nav a {
+        padding: 8px 12px;
+
+        font-size: 11px;
+      }
+
+
+      .pagina-camara {
+        padding: 40px 14px 60px;
+      }
+
+
+      .titulo-camara {
+        font-size: 35px;
+      }
+
+
+      .instruccion {
+        font-size: 15px;
+
+        margin-bottom: 28px;
+      }
+
+
+      .grid-senas {
+        grid-template-columns: repeat(3, 90px);
+
+        gap: 12px;
+      }
+
+
+      .sena,
+      .sena img {
+        width: 90px;
+      }
+
+
+      .sena img {
+  height: 110px;
+}
+
+
+      .marco-camara {
+        width: 95%;
+
+        padding: 9px;
+
+        box-shadow: 6px 6px 0px #285F55;
+      }
+      .resultado {
+        width: 250px;
+
+        min-height: 145px;
+      }
+      #letra {
+        font-size: 55px;
+      }
+      #letra.texto-largo {
+        font-size: 20px;
+      }
+      .estrella-1 {
+        font-size: 23px;
+
+        top: -15px;
+        left: 1%;
+      }
+      .estrella-2 {
+        font-size: 18px;
+
+        top: 45%;
+        right: 2%;
+      }
+      .estrella-3 {
+        font-size: 16px;
+
+        bottom: 115px;
+        right: 8%;
+      }
+
+    }
+
+    @media (max-width: 420px) {
+
+      .boton-senas {
+        flex-direction: column;
+
+        justify-content: center;
+
+        gap: 4px;
+      }
+      .grid-senas {
+        grid-template-columns: repeat(3, 78px);
+
+        gap: 10px;
+
+        padding: 15px;
+      }
+
+      .sena,
+      .sena img {
+        width: 78px;
+      }
+      .sena img {
+  height: 98px;
+}
+    }
+
+
+  </style>
+
+</head>
+<body>
+
+  <header>
+
+    <div class="logo">
+      Aprendé LSU
+    </div>
+    <nav>
+      <a href="index.html">
+        INICIO
+      </a>
+
+      <a href="abecedario.html">
+        ABECEDARIO
+      </a>
+
+     <a href="juegos.html">JUEGOS</a>
+        JUEGOS
+      </a>
+
+    </nav>
+
+  </header>
+
+  <main class="pagina-camara">
+
+
+    <p class="mini-titulo">
+      PRACTICÁ CON LA CÁMARA
+    </p>
+
+
+    <h1 class="titulo-camara">
+      Mostrá tu seña
+    </h1>
+
+
+    <p class="instruccion">
+      Colocá una mano frente a la cámara y realizá
+      una de las letras aprendidas.
+    </p>
+
+    <div class="senas-disponibles">
+
+
+      <button
+        id="botonSenas"
+        class="boton-senas"
+        type="button"
+      >
+
+        <span id="textoAyudaSenas">
+          ¿No sabés cómo hacerlas?
+        </span>
+
+        <strong id="textoBotonSenas">
+          VER SEÑAS DISPONIBLES ↓
+        </strong>
+
+      </button>
+      <div
+        id="panelSenas"
+        class="panel-senas"
+      >
+        <div class="grid-senas">
+
+
+          <div class="sena">
+            <img
+              src="letras/a.jpeg"
+              alt="Seña A"
+            >
+          </div>
+          <div class="sena">
+            <img
+              src="letras/b.jpeg"
+              alt="Seña B"
+            >
+          </div>
+          <div class="sena">
+            <img
+              src="letras/c.jpeg"
+              alt="Seña C"
+            >
+          </div>
+          <div class="sena">
+            <img
+              src="letras/d.jpeg"
+              alt="Seña D"
+            >
+          </div>
+          <div class="sena">
+            <img
+              src="letras/i.jpeg"
+              alt="Seña I"
+            >
+          </div>
+          <div class="sena">
+            <img
+              src="letras/l.jpeg"
+              alt="Seña L"
+            >
+          </div>
+          <div class="sena">
+            <img
+              src="letras/r.jpeg"
+              alt="Seña R"
+            >
+          </div>
+          <div class="sena">
+            <img
+              src="letras/s.jpeg"
+              alt="Seña S"
+            >
+          </div>
+          <div class="sena">
+            <img
+              src="letras/u.jpeg"
+              alt="Seña U"
+            >
+          </div>
+          <div class="sena">
+            <img
+              src="letras/v.jpeg"
+              alt="Seña V"
+            >
+          </div>
+          <div class="sena">
+            <img
+              src="letras/w.jpeg"
+              alt="Seña W"
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="zona-practica">
+      <div class="estrella-deco estrella-1">
+        ✦
+      </div>
+
+      <div class="estrella-deco estrella-2">
+        ✦
+      </div>
+
+      <div class="estrella-deco estrella-3">
+        ✦
+      </div>
+
+      <div class="marco-camara">
+
+        <div class="interior-camara">
+
+          <video
+            id="inputVideo"
+            playsinline
+            muted
+          >
+          </video>
+
+          <canvas
+            id="outputCanvas"
+            width="640"
+            height="480"
+          >
+          </canvas>
+
+        </div>
+      </div>
+
+      <div class="resultado">
+
+        <p class="texto-resultado">
+          LETRA DETECTADA
+        </p>
+
+        <div
+          id="letra"
+          aria-live="polite"
+        >
+          -
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    const videoElement =
+      document.getElementById("inputVideo");
+
+    const canvasElement =
+      document.getElementById("outputCanvas");
+
+    const canvasCtx =
+      canvasElement.getContext("2d");
+
+    const letraElement =
+      document.getElementById("letra");
+
+    function distancia(a, b) {
+
+      return Math.hypot(
+        a.x - b.x,
+        a.y - b.y
+      );
+
+    }
+
+    function dedoExtendido(
+      landmarks,
+      base,
+      nudillo,
+      articulacion,
+      punta
+    ) {
+
+      const largo =
+
+        distancia(
+          landmarks[base],
+          landmarks[nudillo]
+        )
+        +
+
+        distancia(
+          landmarks[nudillo],
+          landmarks[articulacion]
+        )
+
+        +
+
+        distancia(
+          landmarks[articulacion],
+          landmarks[punta]
+        );
+
+
+      return (
+
+        largo > 0.0001 &&
+
+
+        distancia(
+          landmarks[base],
+          landmarks[punta]
+        ) > largo * 0.90 &&
+
+
+        distancia(
+          landmarks[punta],
+          landmarks[0]
+        ) >
+
+        distancia(
+          landmarks[nudillo],
+          landmarks[0]
+        )
+
+      );
+
+    }
+
+    function detectarLetra(landmarks) {
+
+
+      const indiceArriba =
+        landmarks[8].y < landmarks[6].y;
+
+
+      const medioArriba =
+        landmarks[12].y < landmarks[10].y;
+
+
+      const anularArriba =
+        landmarks[16].y < landmarks[14].y;
+
+
+      const meniqueArriba =
+        landmarks[20].y < landmarks[18].y;
+
+      const escalaMano =
+
+        distancia(
+          landmarks[0],
+          landmarks[9]
+        );
+
+      if (escalaMano < 0.0001) {
+
+        return "MANO DETECTADA";
+
+      }
+
+      const distanciaUV =
+
+        Math.abs(
+          landmarks[8].x -
+          landmarks[12].x
+        );
+
+      const ordenBases =
+
+        landmarks[5].x -
+        landmarks[9].x;
+
+      const ordenPuntas =
+
+        landmarks[8].x -
+        landmarks[12].x;
+
+      const anchoPalma =
+
+        Math.abs(
+          landmarks[5].x -
+          landmarks[17].x
+        );
+
+      const margenCruce =
+
+        anchoPalma * 0.04;
+
+      const dedosCruzados =
+
+        (
+          ordenBases > 0 &&
+          ordenPuntas < -margenCruce
+        )
+
+        ||
+
+        (
+          ordenBases < 0 &&
+          ordenPuntas > margenCruce
+        );
+
+      const distanciaIndicePulgarS =
+
+        distancia(
+          landmarks[8],
+          landmarks[4]
+        ) / escalaMano;
+
+      const aperturaC =
+
+        distancia(
+          landmarks[4],
+          landmarks[8]
+        ) / escalaMano;
+
+
+
+      const indiceC =
+
+        distancia(
+          landmarks[8],
+          landmarks[5]
+        ) / escalaMano;
+
+
+
+      const medioC =
+
+        distancia(
+          landmarks[12],
+          landmarks[9]
+        ) / escalaMano;
+
+
+
+      const anularC =
+
+        distancia(
+          landmarks[16],
+          landmarks[13]
+        ) / escalaMano;
+
+
+
+      const meniqueC =
+
+        distancia(
+          landmarks[20],
+          landmarks[17]
+        ) / escalaMano;
+
+
+      const cuatroDedosExtendidosB =
+
+        dedoExtendido(
+          landmarks,
+          5,
+          6,
+          7,
+          8
+        )
+
+        &&
+
+        dedoExtendido(
+          landmarks,
+          9,
+          10,
+          11,
+          12
+        )
+
+        &&
+
+        dedoExtendido(
+          landmarks,
+          13,
+          14,
+          15,
+          16
+        )
+
+        &&
+
+        dedoExtendido(
+          landmarks,
+          17,
+          18,
+          19,
+          20
+        );
+
+      const dedosJuntosB =
+
+        distancia(
+          landmarks[8],
+          landmarks[12]
+        ) / escalaMano < 0.45
+
+        &&
+
+        distancia(
+          landmarks[12],
+          landmarks[16]
+        ) / escalaMano < 0.45
+
+        &&
+
+        distancia(
+          landmarks[16],
+          landmarks[20]
+        ) / escalaMano < 0.45;
+
+      const manoHorizontalB =
+
+        Math.abs(
+          landmarks[12].x -
+          landmarks[9].x
+        )
+
+        >
+
+        Math.abs(
+          landmarks[12].y -
+          landmarks[9].y
+        ) * 1.5;
+      const pulgarRecogidoB =
+
+        Math.min(
+
+          distancia(
+            landmarks[4],
+            landmarks[5]
+          ),
+
+          distancia(
+            landmarks[4],
+            landmarks[9]
+          ),
+
+          distancia(
+            landmarks[4],
+            landmarks[13]
+          )
+
+        ) / escalaMano < 0.65;
+
+      if (
+
+        cuatroDedosExtendidosB &&
+
+        dedosJuntosB &&
+
+        manoHorizontalB &&
+
+        pulgarRecogidoB
+
+      ) {
+
+        return "B";
+
+      }
+
+      else if (
+
+        !indiceArriba &&
+
+        medioArriba &&
+
+        anularArriba &&
+
+        meniqueArriba &&
+
+        distanciaIndicePulgarS < 0.30
+
+      ) {
+
+        return "S";
+
+      }
+
+      else if (
+
+        indiceArriba &&
+
+        medioArriba &&
+
+        anularArriba &&
+
+        !meniqueArriba
+
+      ) {
+
+        return "W";
+
+      }
+
+      else if (
+
+        indiceArriba &&
+
+        medioArriba &&
+
+        !anularArriba &&
+
+        !meniqueArriba &&
+
+        dedosCruzados
+
+      ) {
+
+        return "R";
+
+      }
+
+      else if (
+
+        indiceArriba &&
+
+        medioArriba &&
+
+        !anularArriba &&
+
+        !meniqueArriba &&
+
+        distanciaUV < 0.05
+
+      ) {
+
+        return "U";
+
+      }
+
+
+      else if (
+
+        indiceArriba &&
+
+        medioArriba &&
+
+        !anularArriba &&
+
+        !meniqueArriba &&
+
+        distanciaUV >= 0.05
+
+      ) {
+
+        return "V";
+
+      }
+
+
+      else if (
+
+        meniqueArriba &&
+
+        !indiceArriba &&
+
+        !medioArriba &&
+
+        !anularArriba
+
+      ) {
+
+        return "I";
+
+      }
+
+      else if (
+
+        indiceArriba &&
+
+        !medioArriba &&
+
+        !anularArriba &&
+
+        !meniqueArriba
+
+      ) {
+
+        const aperturaPulgar =
+
+          distancia(
+            landmarks[4],
+            landmarks[5]
+          ) / escalaMano;
+
+        const pulgarHaciaFuera =
+
+          distancia(
+            landmarks[4],
+            landmarks[17]
+          )
+
+          >
+
+          distancia(
+            landmarks[3],
+            landmarks[17]
+          );
+
+        if (
+
+          aperturaPulgar > 0.65 &&
+
+          pulgarHaciaFuera
+
+        ) {
+
+          return "L";
+
+        }
+
+        if (
+
+          aperturaPulgar < 0.45
+
+        ) {
+
+          return "D";
+
+        }
+
+        return "MANO DETECTADA";
+
+      }
+
+      else if (
+
+        indiceC < 0.70 &&
+
+        medioC < 0.70 &&
+
+        anularC < 0.70 &&
+
+        meniqueC < 0.70 &&
+
+
+        Math.min(
+
+          distancia(
+            landmarks[4],
+            landmarks[6]
+          ),
+
+          distancia(
+            landmarks[4],
+            landmarks[10]
+          )
+
+        ) / escalaMano < 0.65
+
+      ) {
+
+        return "A";
+
+      }
+      else if (
+
+        aperturaC > 0.30 &&
+
+        aperturaC < 1.05 &&
+
+
+        indiceC > 0.35 &&
+
+        indiceC < 0.90 &&
+
+
+        medioC > 0.35 &&
+
+        medioC < 0.90 &&
+
+
+        anularC > 0.30 &&
+
+        anularC < 0.90 &&
+
+
+        meniqueC > 0.25 &&
+
+        meniqueC < 0.90
+
+      ) {
+
+        return "C";
+
+      }
+
+
+
+      return "MANO DETECTADA";
+
+    }
+
+    const hands =
+
+      new Hands({
+
+        locateFile: (file) =>
+
+          "https://cdn.jsdelivr.net/npm/@mediapipe/hands/" +
+
+          file
+
+      });
+
+    hands.setOptions({
+
+      maxNumHands: 1,
+
+      modelComplexity: 1,
+
+      minDetectionConfidence: 0.5,
+
+      minTrackingConfidence: 0.5
+
+    });
+
+    hands.onResults((results) => {
+
+
+      canvasCtx.save();
+
+
+      canvasCtx.clearRect(
+        0,
+        0,
+        canvasElement.width,
+        canvasElement.height
+      );
+
+
+      canvasCtx.drawImage(
+        results.image,
+        0,
+        0,
+        canvasElement.width,
+        canvasElement.height
+      );
+
+
+      let letraDetectada = "-";
+
+
+      if (
+
+        results.multiHandLandmarks &&
+
+        results.multiHandLandmarks.length > 0
+
+      ) {
+
+        const landmarks =
+
+          results.multiHandLandmarks[0];
+
+        drawConnectors(
+
+          canvasCtx,
+
+          landmarks,
+
+          HAND_CONNECTIONS,
+
+          {
+            lineWidth: 3
+          }
+
+        );
+
+        drawLandmarks(
+
+          canvasCtx,
+
+          landmarks,
+
+          {
+            radius: 4
+          }
+
+        );
+
+        letraDetectada =
+
+          detectarLetra(landmarks);
+
+      }
+
+      if (
+
+        letraElement.textContent !==
+
+        letraDetectada
+
+      ) {
+
+        letraElement.textContent =
+
+          letraDetectada;
+
+        if (
+
+          letraDetectada ===
+
+          "MANO DETECTADA"
+
+        ) {
+
+          letraElement.classList.add(
+            "texto-largo"
+          );
+        } else {
+          letraElement.classList.remove(
+            "texto-largo"
+          );
+        }
+      }
+      canvasCtx.restore();
+    });
+
+
+    const camera =
+
+      new Camera(
+
+        videoElement,
+
+        {
+          onFrame: async () => {
+
+
+            await hands.send({
+
+              image: videoElement
+
+            });
+          },
+          width: 640,
+          height: 480
+        }
+      );
+    camera.start().catch((error) => {
+      letraElement.textContent =
+
+        "No se pudo iniciar la cámara. Revisá el permiso.";
+
+      letraElement.classList.add(
+        "texto-largo"
+      );
+
+
+      console.error(
+        "Error al iniciar la cámara:",
+        error
+      );
+
+
+    });
+
+
+    const botonSenas =
+      document.getElementById("botonSenas");
+
+    const panelSenas =
+      document.getElementById("panelSenas");
+
+    const textoAyudaSenas =
+      document.getElementById("textoAyudaSenas");
+
+    const textoBotonSenas =
+      document.getElementById("textoBotonSenas");
+
+    botonSenas.addEventListener(
+      "click",
+      () => {
+
+        const estaAbierto =
+          panelSenas.classList.toggle(
+            "abierto"
+          );
+        botonSenas.classList.toggle(
+          "abierto",
+          estaAbierto
+        );
+
+        if (estaAbierto) {
+          textoAyudaSenas.style.display =
+            "none";
+          textoBotonSenas.textContent =
+            "OCULTAR SEÑAS ↑";
+        } else {
+          textoAyudaSenas.style.display =
+            "";
+          textoBotonSenas.textContent =
+            "VER SEÑAS DISPONIBLES ↓";
+        }
+
+      }
+    );
+
+  </script>
+</body>
+</html>

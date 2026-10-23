@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Abecedario LSU</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Shrikhand&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+
+    /* ============================= */
+    /* AJUSTES GENERALES             */
+    /* ============================= */
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "DM Sans", sans-serif;
+      color: #294C45;
+      background-color: #E4EBC8;
+
+      background-image: repeating-linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.25) 0px,
+        rgba(255, 255, 255, 0.25) 45px,
+        transparent 45px,
+        transparent 90px
+      );
+    }
+
+
+    /* ============================= */
+    /* MENÚ                          */
+    /* ============================= */
+
+    header {
+      background-color: #285F55;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      padding: 18px 8%;
+    }
+
+    .logo {
+      color: #FFF8E7;
+
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .logo::after {
+      content: " ✦";
+      color: #B84A3A;
+    }
+
+    nav {
+      display: flex;
+      gap: 15px;
+    }
+
+    nav a {
+      background-color: #9AABD0;
+      color: white;
+
+      text-decoration: none;
+
+      padding: 10px 18px;
+
+      border: 2px solid #FFF8E7;
+      border-radius: 25px;
+
+      font-size: 13px;
+
+      transition: 0.2s;
+    }
+
+    nav a:hover {
+      background-color: #B84A3A;
+    }
+
+    nav .activo {
+      background-color: #B84A3A;
+    }
+
+
+    /* ============================= */
+    /* TÍTULO                        */
+    /* ============================= */
+
+    .titulo {
+      text-align: center;
+
+      padding: 55px 20px 35px;
+    }
+
+    .titulo .estrella {
+      color: #B84A3A;
+      font-size: 34px;
+
+      margin-bottom: 5px;
+    }
+
+    .titulo h1 {
+      font-family: "Shrikhand", cursive;
+      font-weight: normal;
+
+      font-size: 52px;
+
+      color: #285F55;
+
+      margin-bottom: 10px;
+    }
+
+    .titulo h1 span {
+      color: #B84A3A;
+    }
+
+    .titulo p {
+      font-size: 17px;
+      line-height: 1.5;
+
+      max-width: 600px;
+
+      margin: auto;
+    }
+
+
+    /* ============================= */
+    /* ABECEDARIO                    */
+    /* ============================= */
+
+    .contenedor-abecedario {
+      width: 90%;
+      max-width: 1150px;
+
+      margin: 0 auto 80px;
+    }
+
+    .abecedario {
+      display: grid;
+
+      grid-template-columns: repeat(5, 1fr);
+
+      gap: 24px;
+    }
+
+
+.letra {
+  background: transparent;
+  padding: 0;
+  border: none;
+  box-shadow: none;
+}
+
+.letra img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+    @media (max-width: 900px) {
+
+      .abecedario {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+    }
+
+    @media (max-width: 700px) {
+
+      header {
+        flex-direction: column;
+
+        gap: 15px;
+
+        padding: 18px;
+      }
+
+      nav {
+        flex-wrap: wrap;
+        justify-content: center;
+
+        gap: 8px;
+      }
+
+      nav a {
+        padding: 8px 12px;
+
+        font-size: 11px;
+      }
+
+      .titulo {
+        padding-top: 40px;
+      }
+
+      .titulo h1 {
+        font-size: 40px;
+      }
+
+      .titulo p {
+        font-size: 15px;
+      }
+
+      .abecedario {
+        grid-template-columns: repeat(2, 1fr);
+
+        gap: 17px;
+      }
+
+      .letra {
+        padding: 9px;
+
+        border-radius: 18px;
+
+        box-shadow: 4px 4px 0px #285F55;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+ <header>
+
+  <div class="logo">
+    Aprendé LSU
+  </div>
+
+  <nav>
+    <a href="index.html">INICIO</a>
+    <a href="juegos.html">JUEGOS</a>
+    <a href="camara.html">CÁMARA</a>
+  </nav>
+
+</header>
+
+
+  <!-- ============================= -->
+  <!-- TÍTULO                        -->
+  <!-- ============================= -->
+
+  <section class="titulo">
+
+    <div class="estrella">✦</div>
+
+    <h1>
+      Abecedario <span>LSU</span>
+    </h1>
+
+    <p>
+      Conocé la Lengua de Señas Uruguaya.
+      Observá cada imagen y practicá las letras.
+    </p>
+
+  </section>
+
+
+  <!-- ============================= -->
+  <!-- LETRAS                        -->
+  <!-- ============================= -->
+
+  <main class="contenedor-abecedario">
+
+    <div class="abecedario">
+
+
+      <div class="letra">
+        <img src="letras/a.jpeg" alt="Seña de la letra A">
+      </div>
+
+      <div class="letra">
+        <img src="letras/b.jpeg" alt="Seña de la letra B">
+      </div>
+
+      <div class="letra">
+        <img src="letras/c.jpeg" alt="Seña de la letra C">
+      </div>
+
+      <div class="letra">
+        <img src="letras/ch.jpeg" alt="Seña de CH">
+      </div>
+
+      <div class="letra">
+        <img src="letras/d.jpeg" alt="Seña de la letra D">
+      </div>
+
+      <div class="letra">
+        <img src="letras/e.jpeg" alt="Seña de la letra E">
+      </div>
+
+      <div class="letra">
+        <img src="letras/f.jpeg" alt="Seña de la letra F">
+      </div>
+
+      <div class="letra">
+        <img src="letras/g.jpeg" alt="Seña de la letra G">
+      </div>
+
+      <div class="letra">
+        <img src="letras/h.jpeg" alt="Seña de la letra H">
+      </div>
+
+      <div class="letra">
+        <img src="letras/i.jpeg" alt="Seña de la letra I">
+      </div>
+
+      <div class="letra">
+        <img src="letras/j.jpeg" alt="Seña de la letra J">
+      </div>
+
+      <div class="letra">
+        <img src="letras/k.jpeg" alt="Seña de la letra K">
+      </div>
+
+      <div class="letra">
+        <img src="letras/l.jpeg" alt="Seña de la letra L">
+      </div>
+
+      <div class="letra">
+        <img src="letras/ll.jpeg" alt="Seña de LL">
+      </div>
+
+      <div class="letra">
+        <img src="letras/m.jpeg" alt="Seña de la letra M">
+      </div>
+
+      <div class="letra">
+        <img src="letras/n.jpeg" alt="Seña de la letra N">
+      </div>
+
+      <div class="letra">
+        <img src="letras/ñ.jpeg" alt="Seña de la letra Ñ">
+      </div>
+
+      <div class="letra">
+        <img src="letras/o.jpeg" alt="Seña de la letra O">
+      </div>
+
+      <div class="letra">
+        <img src="letras/p.jpeg" alt="Seña de la letra P">
+      </div>
+
+      <div class="letra">
+        <img src="letras/q.jpeg" alt="Seña de la letra Q">
+      </div>
+
+      <div class="letra">
+        <img src="letras/r.jpeg" alt="Seña de la letra R">
+      </div>
+
+      <div class="letra">
+        <img src="letras/rr.jpeg" alt="Seña de RR">
+      </div>
+
+      <div class="letra">
+        <img src="letras/s.jpeg" alt="Seña de la letra S">
+      </div>
+
+      <div class="letra">
+        <img src="letras/t.jpeg" alt="Seña de la letra T">
+      </div>
+
+      <div class="letra">
+        <img src="letras/u.jpeg" alt="Seña de la letra U">
+      </div>
+
+      <div class="letra">
+        <img src="letras/v.jpeg" alt="Seña de la letra V">
+      </div>
+
+      <div class="letra">
+        <img src="letras/w.jpeg" alt="Seña de la letra W">
+      </div>
+
+      <div class="letra">
+        <img src="letras/x.jpeg" alt="Seña de la letra X">
+      </div>
+
+      <div class="letra">
+        <img src="letras/y.jpeg" alt="Seña de la letra Y">
+      </div>
+
+      <div class="letra">
+        <img src="letras/z.jpeg" alt="Seña de la letra Z">
+      </div>
+
+
+    </div>
+
+  </main>
+
+
+</body>
+</html>

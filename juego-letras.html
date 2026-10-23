@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>¿Qué letra es? | Aprendé LSU</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Shrikhand&display=swap"
+    rel="stylesheet"
+  >
+
+
+  <style>
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+
+    body {
+      font-family: "DM Sans", sans-serif;
+
+      color: #294C45;
+
+      background-color: #E4EBC8;
+    }
+
+
+    /* HEADER */
+
+    header {
+      background-color: #285F55;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      padding: 18px 8%;
+    }
+
+
+    .logo {
+      color: #FFF8E7;
+
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+
+    .logo::after {
+      content: " ✦";
+
+      color: #B84A3A;
+    }
+
+
+    nav {
+      display: flex;
+
+      gap: 15px;
+    }
+
+
+    nav a {
+      background-color: #9AABD0;
+
+      color: white;
+
+      text-decoration: none;
+
+      padding: 10px 18px;
+
+      border: 2px solid #FFF8E7;
+      border-radius: 25px;
+
+      font-size: 13px;
+
+      transition: 0.2s;
+    }
+
+
+    nav a:hover {
+      background-color: #B84A3A;
+    }
+
+
+    /* PÁGINA */
+
+    main {
+      min-height: calc(100vh - 70px);
+
+      padding: 30px 20px 70px;
+
+      text-align: center;
+
+      background-color: #E4EBC8;
+
+      background-image: repeating-linear-gradient(
+        90deg,
+        rgba(255,255,255,0.25) 0px,
+        rgba(255,255,255,0.25) 45px,
+        transparent 45px,
+        transparent 90px
+      );
+    }
+
+
+    .parte-superior {
+      width: min(650px, 95%);
+
+      margin: 0 auto 18px;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+
+    .volver {
+      color: #285F55;
+
+      text-decoration: none;
+
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+
+    .marcador {
+      display: flex;
+
+      gap: 10px;
+    }
+
+
+    .contador,
+    .puntos {
+      background-color: #FFF8E7;
+
+      border: 2px solid #285F55;
+      border-radius: 20px;
+
+      padding: 8px 14px;
+
+      font-size: 13px;
+      font-weight: bold;
+
+      box-shadow: 4px 4px 0 #9AABD0;
+    }
+
+
+    .mini-titulo {
+      color: #B84A3A;
+
+      font-size: 13px;
+      font-weight: bold;
+
+      letter-spacing: 2px;
+
+      margin-bottom: 5px;
+    }
+
+
+    h1 {
+      font-family: "Shrikhand", cursive;
+
+      font-size: 43px;
+      font-weight: normal;
+
+      margin-bottom: 20px;
+    }
+
+
+    /* JUEGO */
+
+    .juego {
+      width: min(620px, 95%);
+
+      margin: auto;
+
+      background-color: #FFF8E7;
+
+      border: 2px solid #285F55;
+      border-radius: 30px;
+
+      box-shadow: 8px 8px 0 #285F55;
+
+      padding: 28px;
+    }
+
+
+    .pregunta {
+      font-size: 17px;
+      font-weight: 600;
+
+      margin-bottom: 18px;
+    }
+
+
+    /* ======================== */
+    /* RECORTE DE LA IMAGEN     */
+    /* ======================== */
+
+    /*
+      Acá NO modificamos tu archivo.
+
+      La caja tiene overflow hidden,
+      así que todo lo que queda fuera
+      no se ve.
+
+      La idea es ocultar la zona
+      donde está escrita la letra.
+    */
+
+    .recorte-sena {
+      width: 280px;
+      height: 280px;
+
+      margin: 0 auto 25px;
+
+      overflow: hidden;
+
+      position: relative;
+
+      background-color: #FFF8E7;
+
+      border-radius: 18px;
+    }
+
+
+    .recorte-sena img {
+      width: 100%;
+      height: 100%;
+
+      object-fit: contain;
+
+      display: block;
+
+      transform: none;
+    }
+
+
+    /* RESPUESTAS */
+
+    .respuestas {
+      display: grid;
+
+      grid-template-columns:
+        repeat(2, 120px);
+
+      justify-content: center;
+
+      gap: 14px;
+
+      margin-bottom: 18px;
+    }
+
+
+    .respuesta {
+      background-color: #9AABD0;
+
+      color: white;
+
+      border: 2px solid #285F55;
+      border-radius: 18px;
+
+      padding: 13px;
+
+      font-family: "DM Sans", sans-serif;
+
+      font-size: 20px;
+      font-weight: bold;
+
+      cursor: pointer;
+
+      transition: 0.15s;
+    }
+
+
+    .respuesta:hover {
+      transform: translateY(-3px);
+    }
+
+
+    .respuesta.correcta {
+      background-color: #285F55;
+    }
+
+
+    .respuesta.incorrecta {
+      background-color: #B84A3A;
+    }
+
+
+    /* MENSAJE */
+
+    #mensaje {
+      min-height: 30px;
+
+      color: #B84A3A;
+
+      font-weight: bold;
+
+      margin-bottom: 10px;
+    }
+
+
+    #siguiente {
+      display: none;
+
+      margin: auto;
+
+      background-color: #B84A3A;
+      color: #FFF8E7;
+
+      border: none;
+      border-radius: 25px;
+
+      padding: 12px 25px;
+
+      font-family: "DM Sans", sans-serif;
+
+      font-weight: bold;
+
+      cursor: pointer;
+    }
+
+
+    #siguiente:hover {
+      background-color: #285F55;
+    }
+
+
+    /* FINAL */
+
+    .final {
+      display: none;
+
+      padding: 35px 15px;
+    }
+
+
+    .final h2 {
+      font-family: "Shrikhand", cursive;
+
+      color: #B84A3A;
+
+      font-size: 34px;
+      font-weight: normal;
+
+      margin-bottom: 12px;
+    }
+
+
+    .final p {
+      font-size: 19px;
+
+      margin-bottom: 22px;
+    }
+
+
+    .final button {
+      background-color: #285F55;
+      color: #FFF8E7;
+
+      border: none;
+      border-radius: 25px;
+
+      padding: 12px 25px;
+
+      font-family: "DM Sans", sans-serif;
+      font-weight: bold;
+
+      cursor: pointer;
+    }
+
+
+    /* CELULAR */
+
+    @media (max-width: 700px) {
+
+      header {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+
+      nav {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+
+      nav a {
+        font-size: 11px;
+        padding: 8px 12px;
+      }
+
+
+      .parte-superior {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+
+      h1 {
+        font-size: 35px;
+      }
+
+
+      .juego {
+        padding: 22px 15px;
+      }
+
+
+      .recorte-sena {
+        width: 190px;
+        height: 147px;
+      }
+
+
+      .recorte-sena img {
+        width: 190px;
+        height: 190px;
+      }
+
+
+      .respuestas {
+        grid-template-columns:
+          repeat(2, 100px);
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+  <header>
+
+    <div class="logo">
+      Aprendé LSU
+    </div>
+
+
+    <nav>
+      <a href="index.html">INICIO</a>
+      <a href="abecedario.html">ABECEDARIO</a>
+      <a href="juegos.html">JUEGOS</a>
+      <a href="camara.html">CÁMARA</a>
+    </nav>
+
+  </header>
+
+
+  <main>
+
+
+    <div class="parte-superior">
+
+
+      <a
+        class="volver"
+        href="juegos.html"
+      >
+        ← VOLVER A JUEGOS
+      </a>
+
+
+      <div class="marcador">
+
+        <div class="contador">
+
+          SEÑA:
+
+          <span id="numeroPregunta">
+            1
+          </span>
+
+          /10
+
+        </div>
+
+
+        <div class="puntos">
+
+          PUNTOS:
+
+          <span id="puntos">
+            0
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <p class="mini-titulo">
+      JUEGO
+    </p>
+
+
+    <h1>
+      ¿Qué letra es?
+    </h1>
+
+
+    <div class="juego">
+
+
+      <div id="contenidoJuego">
+
+
+        <p class="pregunta">
+          Mirá la seña y elegí la letra correcta.
+        </p>
+
+
+        <div class="recorte-sena">
+
+          <img
+            id="imagenLetra"
+            src=""
+            alt="Seña en LSU"
+          >
+
+        </div>
+
+
+        <div
+          class="respuestas"
+          id="respuestas"
+        ></div>
+
+
+        <p id="mensaje"></p>
+
+
+        <button
+          id="siguiente"
+          type="button"
+        >
+          SIGUIENTE SEÑA
+        </button>
+
+
+      </div>
+
+
+      <div
+        class="final"
+        id="final"
+      >
+
+
+        <h2>
+          ✦ ¡Terminaste! ✦
+        </h2>
+
+
+        <p>
+          Hiciste
+
+          <strong id="resultadoFinal">
+          </strong>
+
+          puntos.
+        </p>
+
+
+        <button
+          id="reiniciar"
+          type="button"
+        >
+          JUGAR DE NUEVO
+        </button>
+
+
+      </div>
+
+
+    </div>
+
+
+  </main>
+
+
+  <script>
+
+
+    /* ======================== */
+    /* LAS 30 SEÑAS             */
+    /* ======================== */
+
+    const letras = [
+
+      { letra: "A", archivo:"a sl.jpeg" },
+      { letra: "B", archivo:"b sin letra.jpeg" },
+      { letra: "C", archivo:"c sin letra.jpeg" },
+      { letra: "CH", archivo:"ch sin letra.jpeg" },
+      { letra: "D", archivo:"d sin letra.jpeg" },
+
+      { letra: "E", archivo:"e sl.jpeg" },
+      { letra: "F", archivo:"f sl.jpeg" },
+      { letra: "G", archivo:"g sl.jpeg" },
+      { letra: "H", archivo:"h sl.jpeg" },
+      { letra: "I", archivo:"i sl.jpeg" },
+
+      { letra: "J", archivo:"j sl.jpeg" },
+      { letra: "K", archivo:"k sl.jpeg" },
+      { letra: "L", archivo:"l sl.jpeg" },
+      { letra: "LL", archivo:"ll sl.jpeg" },
+      { letra: "M", archivo:"m sl.jpeg" },
+
+      { letra: "N", archivo:"n sl.jpeg" },
+      { letra: "Ñ", archivo:"ñ sl.jpeg" },
+      { letra: "O", archivo:"o sl.jpeg" },
+      { letra: "P", archivo:"p sl.jpeg" },
+      { letra: "Q", archivo:"q sl.jpeg" },
+
+      { letra: "R", archivo:"r sl.jpeg" },
+      { letra: "RR", archivo:"rr sl.jpeg" },
+      { letra: "S", archivo:"s sl.jpeg" },
+      { letra: "T", archivo:"t sl.jpeg" },
+      { letra: "U", archivo:"u sl.jpeg" },
+
+      { letra: "V", archivo:"v sl.jpeg" },
+      { letra: "W", archivo:"w sl.jpeg" },
+      { letra: "X", archivo:"x sl.jpeg" },
+      { letra: "Y", archivo:"y sl.jpeg" },
+      { letra: "Z", archivo:"z sl.jpeg" }
+
+    ];
+
+
+    /* ELEMENTOS */
+
+    const imagenLetra =
+      document.getElementById(
+        "imagenLetra"
+      );
+
+
+    const respuestas =
+      document.getElementById(
+        "respuestas"
+      );
+
+
+    const mensaje =
+      document.getElementById(
+        "mensaje"
+      );
+
+
+    const siguiente =
+      document.getElementById(
+        "siguiente"
+      );
+
+
+    const puntosTexto =
+      document.getElementById(
+        "puntos"
+      );
+
+
+    const numeroPregunta =
+      document.getElementById(
+        "numeroPregunta"
+      );
+
+
+    const contenidoJuego =
+      document.getElementById(
+        "contenidoJuego"
+      );
+
+
+    const final =
+      document.getElementById(
+        "final"
+      );
+
+
+    const resultadoFinal =
+      document.getElementById(
+        "resultadoFinal"
+      );
+
+
+    const reiniciar =
+      document.getElementById(
+        "reiniciar"
+      );
+
+
+    /* VARIABLES */
+
+    let preguntas = [];
+
+    let preguntaActual = 0;
+
+    let letraCorrecta = "";
+
+    let puntos = 0;
+
+
+    /* MEZCLAR */
+
+    function mezclar(array) {
+
+      const copia = [...array];
+
+
+      for (
+        let i = copia.length - 1;
+        i > 0;
+        i--
+      ) {
+
+        const j =
+          Math.floor(
+            Math.random() * (i + 1)
+          );
+
+
+        [
+          copia[i],
+          copia[j]
+        ] = [
+          copia[j],
+          copia[i]
+        ];
+
+      }
+
+
+      return copia;
+
+    }
+
+
+    /* INICIAR PARTIDA */
+
+    function iniciarPartida() {
+
+      /*
+        De las 30 señas,
+        elegimos 10 al azar.
+
+        Como primero mezclamos
+        y después usamos slice,
+        NO pueden repetirse.
+      */
+
+      preguntas =
+        mezclar(
+          letras
+        ).slice(0, 10);
+
+
+      preguntaActual = 0;
+
+      puntos = 0;
+
+
+      puntosTexto.textContent =
+        puntos;
+
+
+      contenidoJuego.style.display =
+        "block";
+
+
+      final.style.display =
+        "none";
+
+
+      nuevaPregunta();
+
+    }
+
+
+    /* NUEVA PREGUNTA */
+
+    function nuevaPregunta() {
+
+
+      if (
+        preguntaActual >=
+        preguntas.length
+      ) {
+
+        terminarPartida();
+
+        return;
+
+      }
+
+
+      respuestas.innerHTML =
+        "";
+
+
+      mensaje.textContent =
+        "";
+
+
+      siguiente.style.display =
+        "none";
+
+
+      numeroPregunta.textContent =
+        preguntaActual + 1;
+
+
+      const elegida =
+        preguntas[
+          preguntaActual
+        ];
+
+
+      letraCorrecta =
+        elegida.letra;
+
+
+      imagenLetra.src =
+        "senassinletra/" +
+        elegida.archivo;
+
+
+      /* 4 OPCIONES */
+
+      let opciones = [
+        elegida
+      ];
+
+
+      while (
+        opciones.length < 4
+      ) {
+
+
+        const otra =
+
+          letras[
+            Math.floor(
+              Math.random() *
+              letras.length
+            )
+          ];
+
+
+        const repetida =
+
+          opciones.some(
+            opcion =>
+              opcion.letra ===
+              otra.letra
+          );
+
+
+        if (!repetida) {
+
+          opciones.push(
+            otra
+          );
+
+        }
+
+      }
+
+
+      opciones =
+        mezclar(
+          opciones
+        );
+
+
+      opciones.forEach(
+        opcion => {
+
+
+          const boton =
+
+            document.createElement(
+              "button"
+            );
+
+
+          boton.className =
+            "respuesta";
+
+
+          boton.type =
+            "button";
+
+
+          boton.textContent =
+            opcion.letra;
+
+
+          boton.addEventListener(
+            "click",
+            () => comprobar(
+              boton,
+              opcion.letra
+            )
+          );
+
+
+          respuestas.appendChild(
+            boton
+          );
+
+        }
+      );
+
+    }
+
+
+    /* COMPROBAR */
+
+    function comprobar(
+      boton,
+      respuesta
+    ) {
+
+
+      if (
+        respuesta ===
+        letraCorrecta
+      ) {
+
+
+        puntos++;
+
+
+        puntosTexto.textContent =
+          puntos;
+
+
+        boton.classList.add(
+          "correcta"
+        );
+
+
+        mensaje.textContent =
+          "✦ ¡CORRECTO! +1 PUNTO ✦";
+
+
+        siguiente.style.display =
+          "block";
+
+
+        /*
+          Una vez que acertó,
+          bloqueamos las cuatro.
+        */
+
+        document
+          .querySelectorAll(
+            ".respuesta"
+          )
+          .forEach(
+            b => b.disabled = true
+          );
+
+
+      } else {
+
+
+        boton.classList.add(
+          "incorrecta"
+        );
+
+
+        mensaje.textContent =
+          "Probá otra vez";
+
+
+        setTimeout(
+          () => {
+
+            boton.classList.remove(
+              "incorrecta"
+            );
+
+          },
+          500
+        );
+
+      }
+
+    }
+
+
+    /* SIGUIENTE */
+
+    siguiente.addEventListener(
+      "click",
+      () => {
+
+        preguntaActual++;
+
+        nuevaPregunta();
+
+      }
+    );
+
+
+    /* FINAL */
+
+    function terminarPartida() {
+
+
+      contenidoJuego.style.display =
+        "none";
+
+
+      final.style.display =
+        "block";
+
+
+      resultadoFinal.textContent =
+        puntos + " de 10";
+
+    }
+
+
+    /* VOLVER A EMPEZAR */
+
+    reiniciar.addEventListener(
+      "click",
+      iniciarPartida
+    );
+
+
+    iniciarPartida();
+
+
+  </script>
+
+
+</body>
+
+</html>
